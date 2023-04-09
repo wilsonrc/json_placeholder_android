@@ -1,19 +1,37 @@
 package com.example.jsonapp.data.sources
 
-import com.example.jsonapp.data.sources.models.CommentApiModel
-import com.example.jsonapp.data.sources.models.PostApiModel
-import com.example.jsonapp.data.sources.models.UserApiModel
+import com.example.jsonapp.data.sources.local.JPHLocalDataSource
+import com.example.jsonapp.data.sources.models.Post
+import com.example.jsonapp.data.sources.remote.JPHRemoteDataSource
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.onEmpty
 
-class JPHRepository : JPHDataSource{
-    override fun getPosts(): List<PostApiModel> {
-        TODO("Not yet implemented")
+class JPHRepository(
+    private val localDataSource: JPHLocalDataSource,
+    private val remoteDataSource: JPHRemoteDataSource
+) {
+    suspend fun getPost(): Flow<List<Post>> {
+        return localDataSource.getPosts().onEmpty {
+            fetchRemotePosts()
+        }
     }
 
-    override fun getComments(): List<CommentApiModel> {
-        TODO("Not yet implemented")
+    private suspend fun fetchRemotePosts() {
+        remoteDataSource.getPosts().collect {
+            localDataSource.savePosts(it)
+        }
     }
 
-    override fun getUser(userId: String): UserApiModel {
-        TODO("Not yet implemented")
+    suspend fun deletePost(id: String) {
+        localDataSource.deletePost(id)
     }
+
+    suspend fun updateFavoriteState(postId: String, favorite: Boolean) {
+        localDataSource.updateFavoriteState(postId, favorite)
+    }
+
+    suspend fun deleteAllNotFavoritePosts() {
+        localDataSource.deleteAllNotFavoritePosts()
+    }
+
 }

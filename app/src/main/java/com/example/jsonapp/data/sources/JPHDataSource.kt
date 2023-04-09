@@ -1,11 +1,26 @@
 package com.example.jsonapp.data.sources
 
-import com.example.jsonapp.data.sources.models.CommentApiModel
-import com.example.jsonapp.data.sources.models.PostApiModel
-import com.example.jsonapp.data.sources.models.UserApiModel
+import com.example.jsonapp.data.sources.models.*
+import kotlinx.coroutines.flow.Flow
 
 interface JPHDataSource {
-    fun getPosts() : List<PostApiModel>
-    fun getComments() : List<CommentApiModel>
-    fun getUser(userId : String) : UserApiModel
+    suspend fun getPosts(): Flow<List<Post>>
+
+    suspend fun savePosts(posts: List<Post>)
+
+    suspend fun deletePost(id: String)
+
+    suspend fun updateFavoriteState(postId: String, favorite: Boolean)
+
+    suspend fun getFavoritePosts(): Flow<List<Post>>
+
+    suspend fun deleteAllNotFavoritePosts()
+
+    suspend fun getComments(postId: String): List<Comment>
+
+    suspend fun saveComments(comments: List<Comment>)
+
+    suspend fun getUser(id: String): User
+
+    suspend fun saveUser(user: User)
 }
