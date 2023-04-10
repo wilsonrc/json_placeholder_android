@@ -1,5 +1,6 @@
 package com.example.jsonapp.ui
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -24,22 +25,24 @@ class PostAdapter(
             }
         }
 
+        @SuppressLint("UseCompatLoadingForDrawables")
         fun bind(post: Post) {
-            binding.postTitleTextView.text = post.title
-            binding.postBodyTextView.text = post.body
-
-            binding.favoriteButton.setImageDrawable(
-                if (post.isFavorite) {
-                    binding.root.context.getDrawable(R.drawable.baseline_star_full)
-                } else {
-                    binding.root.context.getDrawable(R.drawable.baseline_star_empty)
+            with(binding){
+                postTitleTextView.text = post.title
+                postBodyTextView.text = post.body
+                favoriteButton.setImageDrawable(
+                    if (post.isFavorite) {
+                        root.context.getDrawable(R.drawable.baseline_star_full)
+                    } else {
+                        root.context.getDrawable(R.drawable.baseline_star_empty)
+                    }
+                )
+                favoriteButton.setOnClickListener {
+                    onPostClickListener(PostClickAction.FavoriteClicked(post = post))
                 }
-            )
-            binding.favoriteButton.setOnClickListener {
-                onPostClickListener(PostClickAction.FavoriteClicked(post = post))
-            }
-            binding.deletePostButton.setOnClickListener {
-                onPostClickListener(PostClickAction.DeleteClicked(post = post))
+                deletePostButton.setOnClickListener {
+                    onPostClickListener(PostClickAction.DeleteClicked(post = post))
+                }
             }
         }
     }

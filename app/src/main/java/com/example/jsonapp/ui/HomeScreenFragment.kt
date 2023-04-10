@@ -27,20 +27,19 @@ class HomeScreenFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         _binding = HomeScreenBinding.inflate(inflater, container, false)
         return binding.root
-
     }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         homeScreenViewModel.loadPosts()
         postAdapter = PostAdapter(emptyList()) {}
 
-        binding.postsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-        binding.postsRecyclerView.adapter = postAdapter
+        with(binding) {
+            postsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+            postsRecyclerView.adapter = postAdapter
+        }
 
         observeHomeUiState()
     }
@@ -55,40 +54,41 @@ class HomeScreenFragment : Fragment() {
         }
     }
 
-    private fun handleHomeUiStates(uiState: HomeScreenViewModel.HomeUiState) {
+    private fun handleHomeUiStates(uiState: HomeUiState) {
         when (uiState) {
-            is HomeScreenViewModel.HomeUiState.Loading -> {
+            is HomeUiState.Loading -> {
                 // Show a loading indicator if needed
             }
-            is HomeScreenViewModel.HomeUiState.Success -> {
-                postAdapter = PostAdapter(uiState.posts) { data ->
-                    when (data) {
-                        is PostAdapter.PostClickAction.PostClicked -> {
-                            homeScreenViewModel.currentPost = data.post
-                            val bundle = Bundle().apply {
-                                putString("postId", data.post.id.toString())
-                            }
-                            findNavController().navigate(
-                                R.id.action_HomeScreenFragment_to_PostDetailsFragment,
-                                bundle
-                            )
-                        }
-                        is PostAdapter.PostClickAction.FavoriteClicked -> {
-                            homeScreenViewModel.onFavoriteClicked(data.post)
-                        }
-                        is PostAdapter.PostClickAction.DeleteClicked -> {
-                            homeScreenViewModel.onDeleteClicked(data.post)
-                        }
-                    }
-                }
+            is HomeUiState.Success -> {
+                postAdapter = PostAdapter(uiState.posts) { handlePostClick(it) }
                 binding.postsRecyclerView.adapter = postAdapter
             }
-            is HomeScreenViewModel.HomeUiState.Error -> {
+            is HomeUiState.Error -> {
                 // Show an error message or a retry button
             }
         }
     }
 
+    private fun handlePostClick(action: PostAdapter.PostClickAction) {
+        when (action) {
+            is PostAdapter.PostClickAction.PostClicked -> {
+                homeScreenViewModel.currentPost = action.post
+                val bundle = Bundle().apply {
+                    putString("postId", action.post.id.toString())
+                }
+                findNavController().navigate(
+                    R.id.action_HomeScreenFragment_to_PostDetailsFragment,
+                    bundle
+                )
+            }
+            is PostAdapter.PostClickAction.FavoriteClicked -> {
+                homeScreenViewModel.onFavoriteClicked(action.post)
+            }
+            is PostAdapter.PostClickAction.DeleteClicked -> {
+                homeScreenViewModel.onDeleteClicked(action.post)
+            }
+        }
+    }
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

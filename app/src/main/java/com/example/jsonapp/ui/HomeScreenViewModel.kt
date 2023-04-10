@@ -40,8 +40,8 @@ class HomeScreenViewModel @Inject constructor(
 
     fun loadCurrentPostDetail(postId: String) = viewModelScope.launch {
         if (currentPost == null) {
-            val post = jphRepository.getPost(postId)
-            post?.let {
+            val localPost = jphRepository.getPost(postId)
+            localPost?.let { post ->
                 currentPost = post
                 post.id.let {
                     val users = jphRepository.getUser(it.toString())
@@ -57,8 +57,10 @@ class HomeScreenViewModel @Inject constructor(
         } else {
             currentPost?.let { post ->
                 post.id.let {
+
                     val users = jphRepository.getUser(it.toString())
                     val comments = jphRepository.getComments(it.toString())
+
                     _postDetailsUiState.value = PostDetailsUiState.Success(
                         post = post,
                         user = users,
@@ -70,33 +72,15 @@ class HomeScreenViewModel @Inject constructor(
 
     }
 
-
-    fun deleteNonFavoritePosts() = viewModelScope.launch(Dispatchers.IO) {
+    fun deleteNonFavoritePosts() = viewModelScope.launch {
         jphRepository.deleteAllNonFavoritePosts()
     }
 
-    fun onFavoriteClicked(post: Post) = viewModelScope.launch(Dispatchers.IO) {
+    fun onFavoriteClicked(post: Post) = viewModelScope.launch {
         jphRepository.updateFavoriteState(post.id.toString(), !post.isFavorite)
     }
 
-    fun onDeleteClicked(post: Post) {
-        viewModelScope.launch(Dispatchers.IO) {
-            jphRepository.deletePost(post.id.toString())
-        }
+    fun onDeleteClicked(post: Post) = viewModelScope.launch {
+        jphRepository.deletePost(post.id.toString())
     }
-
-    sealed class PostDetailsUiState {
-        object Loading : PostDetailsUiState()
-        data class Success(val post: Post, val user: User, val comments: List<Comment>) :
-            PostDetailsUiState()
-
-        data class Error(val message: String) : PostDetailsUiState()
-    }
-
-    sealed class HomeUiState {
-        object Loading : HomeUiState()
-        data class Success(val posts: List<Post>) : HomeUiState()
-        data class Error(val message: String) : HomeUiState()
-    }
-
 }

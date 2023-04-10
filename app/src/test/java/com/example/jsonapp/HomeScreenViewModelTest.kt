@@ -8,12 +8,11 @@ import com.example.jsonapp.data.sources.models.Comment
 import com.example.jsonapp.data.sources.models.Post
 import com.example.jsonapp.data.sources.models.User
 import com.example.jsonapp.ui.HomeScreenViewModel
+import com.example.jsonapp.ui.HomeUiState
+import com.example.jsonapp.ui.PostDetailsUiState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.async
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.*
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -57,7 +56,7 @@ class HomeScreenViewModelTest {
         viewModel.loadPosts()
 
         assertEquals(
-            HomeScreenViewModel.HomeUiState.Success(posts),
+            HomeUiState.Success(posts),
             viewModel.homeScreenUiState.value
         )
     }
@@ -72,10 +71,10 @@ class HomeScreenViewModelTest {
         `when`(mockRepository.getUser("1")).thenReturn(user)
         `when`(mockRepository.getComments("1")).thenReturn(comments)
 
-        viewModel.loadPostDetail(post)
+        viewModel.loadCurrentPostDetail(post.id.toString())
 
         assertEquals(
-            HomeScreenViewModel.PostDetailsUiState.Success(post, user, comments),
+            PostDetailsUiState.Success(post, user, comments),
             viewModel.postDetailsUiState.value
         )
     }

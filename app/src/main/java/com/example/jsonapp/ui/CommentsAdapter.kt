@@ -22,9 +22,11 @@ class CommentsAdapter(private val comments: List<Comment>) :
 
     inner class ViewHolder(private val binding: ItemCommentBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(comment: Comment) {
-            binding.commentNameTextView.text = comment.name
-            binding.commentEmailTextView.text = comment.email
-            binding.commentBodyTextView.text = comment.body
+            with(binding) {
+                commentNameTextView.text = comment.name
+                commentEmailTextView.text = comment.email
+                commentBodyTextView.text = comment.body
+            }
         }
     }
 }
