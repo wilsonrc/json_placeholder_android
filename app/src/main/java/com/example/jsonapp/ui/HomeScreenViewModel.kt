@@ -1,7 +1,9 @@
 package com.example.jsonapp.ui
 
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.jsonapp.data.sources.IJPHRepository
 import com.example.jsonapp.data.sources.JPHRepository
 import com.example.jsonapp.data.sources.models.Comment
 import com.example.jsonapp.data.sources.models.Post
@@ -11,45 +13,45 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 
 @HiltViewModel
 class HomeScreenViewModel @Inject constructor(
-    val jphRepository: JPHRepository
+    private val jphRepository: IJPHRepository
 ) : ViewModel() {
 
-    private val _homeScreenUiState = MutableStateFlow<HomeUiState>(HomeUiState.Loading)
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    val _homeScreenUiState = MutableStateFlow<HomeUiState>(HomeUiState.Loading)
     val homeScreenUiState: StateFlow<HomeUiState> = _homeScreenUiState
 
     private val _postDetailsUiState =
         MutableStateFlow<PostDetailsUiState>(PostDetailsUiState.Loading)
     val postDetailsUiState: StateFlow<PostDetailsUiState> = _postDetailsUiState
 
-    var currentPost: Post? = null
+    private var currentPost: Post? = null
 
-    init {
-        viewModelScope.launch(Dispatchers.IO) {
-            jphRepository.fetchRemoteUsers()
-            jphRepository.getPost().collect {
-                _homeScreenUiState.value = HomeUiState.Success(it)
-            }
+    fun loadPosts() = viewModelScope.launch {
+        jphRepository.fetchRemoteUsers()
+        jphRepository.getPost().collect {
+            _homeScreenUiState.value = HomeUiState.Success(it)
         }
     }
 
-    fun loadPostDetail(post: Post) {
+    fun loadPostDetail(post: Post) = viewModelScope.launch {
         currentPost = post
-        viewModelScope.launch(Dispatchers.IO) {
-            post.id.let {
-                _postDetailsUiState.value = PostDetailsUiState.Success(
-                    post = post,
-                    user = jphRepository.getUser(it.toString()),
-                    comments = jphRepository.getComments(it.toString())
-                )
-                jphRepository.getComments(it.toString())
-            }
+        post.id.let {
+            val users = jphRepository.getUser(it.toString())
+            val comments = jphRepository.getComments(it.toString())
+            _postDetailsUiState.value = PostDetailsUiState.Success(
+                post = post,
+                user = users,
+                comments = comments
+            )
         }
     }
+
 
     fun deleteNonFavoritePosts() = viewModelScope.launch(Dispatchers.IO) {
         jphRepository.deleteAllNonFavoritePosts()

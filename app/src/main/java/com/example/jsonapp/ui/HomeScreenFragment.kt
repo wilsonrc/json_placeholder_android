@@ -36,6 +36,7 @@ class HomeScreenFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        homeScreenViewModel.loadPosts()
         postAdapter = PostAdapter(emptyList()) {}
 
         binding.postsRecyclerView.layoutManager = LinearLayoutManager(requireContext())

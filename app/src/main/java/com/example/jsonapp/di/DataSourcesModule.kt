@@ -1,5 +1,6 @@
 package com.example.jsonapp.di
 
+import com.example.jsonapp.data.sources.IJPHRepository
 import com.example.jsonapp.data.sources.JPHRepository
 import com.example.jsonapp.data.sources.local.CommentsDao
 import com.example.jsonapp.data.sources.local.JPHLocalDataSource
@@ -12,6 +13,8 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.scopes.ViewModelScoped
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 
 @Module
 @InstallIn(ViewModelComponent::class)
@@ -43,11 +46,13 @@ class DataSourcesModule {
     @ViewModelScoped
     fun provideJPHRepository(
         remoteDataSource: JPHRemoteDataSource,
-        localDataSource: JPHLocalDataSource
-    ): JPHRepository {
+        localDataSource: JPHLocalDataSource,
+        @IODispatcher dispatcher: CoroutineDispatcher
+    ): IJPHRepository {
         return JPHRepository(
             remoteDataSource = remoteDataSource,
-            localDataSource = localDataSource
+            localDataSource = localDataSource,
+            dispatcher = dispatcher
         )
     }
 }
