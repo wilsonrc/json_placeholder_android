@@ -10,20 +10,23 @@ import retrofit2.http.Path
 interface JPHService {
 
     @GET("posts")
-    fun getPosts(): List<PostApiModel>
+    suspend fun getPosts(): List<PostApiModel>
 
     @GET("posts/{id}/comments")
-    fun getComments(@Path("id") postId: String): List<CommentApiModel>
+    suspend fun getComments(@Path("id") postId: String): List<CommentApiModel>
 
     @GET("users/{id}")
-    fun getUser(userId: String): UserApiModel
+    suspend fun getUser(userId: String): UserApiModel
+
+    @GET("users")
+    suspend fun getUsers(): List<UserApiModel>
 
     companion object {
         private const val BASE_URL = "https://jsonplaceholder.typicode.com/"
 
         fun create(): JPHService {
             val logger =
-                HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BASIC }
+                HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY }
 
             val client = OkHttpClient.Builder()
                 .addInterceptor(logger)

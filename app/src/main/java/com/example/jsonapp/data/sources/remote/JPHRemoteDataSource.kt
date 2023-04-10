@@ -42,7 +42,7 @@ class JPHRemoteDataSource(private val jphService: JPHService) : JPHDataSource {
     }
 
     override suspend fun getComments(postId: String): List<Comment> {
-        return jphService.getComments(postId).map {
+         return jphService.getComments(postId).map {
             Comment(
                 postId = it.postId,
                 id = it.id,
@@ -67,6 +67,24 @@ class JPHRemoteDataSource(private val jphService: JPHService) : JPHDataSource {
             phone = user.phone,
             website = user.website,
         )
+    }
+
+    override suspend fun getUsers(): Flow<List<User>> = flow {
+        val users = jphService.getUsers().map {
+            User(
+                id = it.id,
+                name = it.name,
+                username = it.username,
+                email = it.email,
+                phone = it.phone,
+                website = it.website,
+            )
+        }
+        emit(users)
+    }
+
+    override suspend fun saveUsers(users: List<User>) {
+        TODO("Not yet implemented")
     }
 
     override suspend fun saveUser(user: User) {

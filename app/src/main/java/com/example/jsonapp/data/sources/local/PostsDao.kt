@@ -15,15 +15,15 @@ interface PostsDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun savePosts(posts: List<PostDbModel>)
 
-    @Query("DELETE FROM posts WHERE postId = :id")
+    @Query("DELETE FROM posts WHERE id = :id")
     fun deletePost(id: String)
 
-    @Query("UPDATE posts SET favorite = :favorite WHERE postId = :postId")
+    @Query("UPDATE posts SET isFavorite = :favorite WHERE id = :postId")
     fun updateFavoriteState(postId: String, favorite: Boolean)
 
-    @Query("SELECT * FROM posts WHERE favorite = 1")
+    @Query("SELECT * FROM posts WHERE isFavorite = 1")
     fun getFavoritePosts(): Flow<List<PostDbModel>>
 
-    @Query("DELETE FROM posts WHERE favorite = 0")
+    @Query("DELETE FROM posts WHERE isFavorite = 0")
     fun deleteAllNotFavoritePosts()
 }

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="4dp"
+    app:cardElevation="4dp"
+    app:cardCornerRadius="8dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/commentNameTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="@color/primary_text"
+            android:fontFamily="sans-serif-medium"
+            android:layout_marginBottom="4dp"
+            tools:text="Comment Name" />
+
+        <TextView
+            android:id="@+id/commentEmailTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="@color/secondary_text"
+            android:layout_marginBottom="8dp"
+            tools:text="Comment Email" />
+
+        <TextView
+            android:id="@+id/commentBodyTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="@color/primary_text"
+            android:layout_marginBottom="16dp"
+            tools:text="Comment Body" />
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

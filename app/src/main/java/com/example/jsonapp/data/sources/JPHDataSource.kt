@@ -16,11 +16,14 @@ interface JPHDataSource {
 
     suspend fun deleteAllNotFavoritePosts()
 
-    suspend fun getComments(postId: String): List<Comment>
+    suspend fun getComments(postId: String):List<Comment>
 
     suspend fun saveComments(comments: List<Comment>)
 
     suspend fun getUser(id: String): User
 
+    suspend fun getUsers(): Flow<List<User>>
+
+    suspend fun saveUsers(users: List<User>)
     suspend fun saveUser(user: User)
 }

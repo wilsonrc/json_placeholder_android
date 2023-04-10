@@ -96,14 +96,45 @@ class JPHLocalDataSource(
             )
         }
     }
-       override suspend fun saveUser(user: User) {
-            usersDao.saveUser(UserDbModel(
+
+    override suspend fun saveUser(user: User) {
+        usersDao.saveUser(
+            UserDbModel(
                 id = user.id,
                 name = user.name,
                 username = user.username,
                 email = user.email,
                 phone = user.phone,
                 website = user.website,
-            ))
+            )
+        )
+    }
+
+    override suspend fun getUsers(): Flow<List<User>> {
+        return usersDao.getUsers().map { users ->
+            users.map { user ->
+                User(
+                    id = user.id,
+                    name = user.name,
+                    username = user.username,
+                    email = user.email,
+                    phone = user.phone,
+                    website = user.website,
+                )
+            }
         }
+    }
+
+    override suspend fun saveUsers(users: List<User>) {
+        usersDao.saveUsers(users.map { user ->
+            UserDbModel(
+                id = user.id,
+                name = user.name,
+                username = user.username,
+                email = user.email,
+                phone = user.phone,
+                website = user.website,
+            )
+        })
+    }
 }
