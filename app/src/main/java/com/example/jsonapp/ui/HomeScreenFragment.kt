@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -21,9 +22,8 @@ class HomeScreenFragment : Fragment() {
 
     private var _binding: HomeScreenBinding? = null
     private val binding get() = _binding!!
-    private lateinit var homeScreenViewModel: HomeScreenViewModel
     private lateinit var postAdapter: PostAdapter
-
+    private val homeScreenViewModel: HomeScreenViewModel by viewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -37,7 +37,6 @@ class HomeScreenFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        homeScreenViewModel = ViewModelProvider(requireActivity())[HomeScreenViewModel::class.java]
         postAdapter = PostAdapter(emptyList()) {}
 
         binding.postsRecyclerView.layoutManager = LinearLayoutManager(requireContext())

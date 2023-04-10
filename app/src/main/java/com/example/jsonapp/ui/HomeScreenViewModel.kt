@@ -51,6 +51,16 @@ class HomeScreenViewModel @Inject constructor(
         }
     }
 
+    fun deleteNonFavoritePosts() = viewModelScope.launch(Dispatchers.IO) {
+        jphRepository.deleteAllNonFavoritePosts()
+    }
+
+    fun deletePost(post: Post) {
+        viewModelScope.launch(Dispatchers.IO) {
+            jphRepository.deletePost(post.id.toString())
+        }
+    }
+
     sealed class PostDetailsUiState {
         object Loading : PostDetailsUiState()
         data class Success(val post: Post, val user: User, val comments: List<Comment>) :

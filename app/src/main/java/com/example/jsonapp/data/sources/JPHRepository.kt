@@ -65,7 +65,7 @@ class JPHRepository @Inject constructor(
         localDataSource.updateFavoriteState(postId, favorite)
     }
 
-    suspend fun deleteAllNotFavoritePosts() {
+    suspend fun deleteAllNonFavoritePosts() {
         localDataSource.deleteAllNotFavoritePosts()
     }
 
