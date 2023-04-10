@@ -18,7 +18,8 @@ class JPHLocalDataSource(
                     userId = post.userId,
                     id = post.postId,
                     title = post.title,
-                    body = post.body
+                    body = post.body,
+                    isFavorite = post.isFavorite
                 )
             }
         }
@@ -30,7 +31,8 @@ class JPHLocalDataSource(
                 userId = post.userId,
                 postId = post.id,
                 title = post.title,
-                body = post.body
+                body = post.body,
+                isFavorite = post.isFavorite
             )
         })
     }
@@ -50,7 +52,8 @@ class JPHLocalDataSource(
                     userId = post.userId,
                     id = post.postId,
                     title = post.title,
-                    body = post.body
+                    body = post.body,
+                    isFavorite = post.isFavorite
                 )
             }
         }

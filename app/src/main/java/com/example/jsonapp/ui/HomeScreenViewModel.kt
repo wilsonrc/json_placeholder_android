@@ -55,7 +55,11 @@ class HomeScreenViewModel @Inject constructor(
         jphRepository.deleteAllNonFavoritePosts()
     }
 
-    fun deletePost(post: Post) {
+    fun onFavoriteClicked(post: Post) = viewModelScope.launch(Dispatchers.IO) {
+        jphRepository.updateFavoriteState(post.id.toString(), !post.isFavorite)
+    }
+
+    fun onDeleteClicked(post: Post) {
         viewModelScope.launch(Dispatchers.IO) {
             jphRepository.deletePost(post.id.toString())
         }

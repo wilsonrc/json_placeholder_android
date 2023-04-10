@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
@@ -55,11 +54,21 @@ class HomeScreenFragment : Fragment() {
                         }
                         is HomeScreenViewModel.HomeUiState.Success -> {
                             postAdapter = PostAdapter(uiState.posts) { post ->
-                                //SEND POST IN A BUNDLE
-                                val bundle = Bundle().apply {
-                                    putSerializable("post", post)
+                                when(post) {
+                                    is PostAdapter.PostClickAction.PostClicked -> {
+                                        //SEND POST IN A BUNDLE
+                                        val bundle = Bundle().apply {
+                                            putSerializable("post", post.post)
+                                        }
+                                        findNavController().navigate(R.id.action_HomeScreenFragment_to_PostDetailsFragment, bundle)
+                                    }
+                                    is PostAdapter.PostClickAction.FavoriteClicked -> {
+                                        homeScreenViewModel.onFavoriteClicked(post.post)
+                                    }
+                                    is PostAdapter.PostClickAction.DeleteClicked -> {
+                                        homeScreenViewModel.onDeleteClicked(post.post)
+                                    }
                                 }
-                                findNavController().navigate(R.id.action_HomeScreenFragment_to_PostDetailsFragment, bundle)
                             }
                             binding.postsRecyclerView.adapter = postAdapter
                         }
