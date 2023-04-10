@@ -19,6 +19,9 @@ interface PostsDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun savePosts(posts: List<PostDbModel>)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun savePost(post: PostDbModel)
+
     @Query("DELETE FROM posts WHERE id = :id")
     fun deletePost(id: String)
 

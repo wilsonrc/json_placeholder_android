@@ -43,6 +43,17 @@ class JPHLocalDataSource(
         }
     }
 
+    override suspend fun savePost(post: Post) {
+        postsDao.savePost(
+            PostDbModel(
+                userId = post.userId,
+                postId = post.id,
+                title = post.title,
+                body = post.body,
+                isFavorite = post.isFavorite
+            )
+        )
+    }
     override suspend fun savePosts(posts: List<Post>) {
         postsDao.savePosts(posts.map { post ->
             PostDbModel(
@@ -131,18 +142,16 @@ class JPHLocalDataSource(
         )
     }
 
-    override suspend fun getUsers(): Flow<List<User>> {
-        return usersDao.getUsers().map { users ->
-            users.map { user ->
-                User(
-                    id = user.id,
-                    name = user.name,
-                    username = user.username,
-                    email = user.email,
-                    phone = user.phone,
-                    website = user.website,
-                )
-            }
+    override suspend fun getUsers(): List<User> {
+        return usersDao.getUsers().map { user ->
+            User(
+                id = user.id,
+                name = user.name,
+                username = user.username,
+                email = user.email,
+                phone = user.phone,
+                website = user.website,
+            )
         }
     }
 

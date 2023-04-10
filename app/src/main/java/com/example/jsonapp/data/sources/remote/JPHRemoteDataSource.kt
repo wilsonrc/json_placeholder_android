@@ -29,10 +29,21 @@ class JPHRemoteDataSource @Inject constructor(
     }
 
     override suspend fun getPost(id: String): Post? {
-        TODO("Not yet implemented")
+        val post = jphService.getPost(id)
+        return Post(
+            userId = post.userId,
+            id = post.id,
+            title = post.title,
+            body = post.body,
+            isFavorite = false
+        )
     }
 
     override suspend fun savePosts(posts: List<Post>) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun savePost(post: Post) {
         TODO("Not yet implemented")
     }
 
@@ -80,8 +91,8 @@ class JPHRemoteDataSource @Inject constructor(
         )
     }
 
-    override suspend fun getUsers(): Flow<List<User>> = flow {
-        val users = jphService.getUsers().map {
+    override suspend fun getUsers(): List<User> {
+        return jphService.getUsers().map {
             User(
                 id = it.id,
                 name = it.name,
@@ -91,7 +102,6 @@ class JPHRemoteDataSource @Inject constructor(
                 website = it.website,
             )
         }
-        emit(users)
     }
 
     override suspend fun saveUsers(users: List<User>) {

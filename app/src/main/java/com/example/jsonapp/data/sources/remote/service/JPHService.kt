@@ -11,6 +11,9 @@ interface JPHService {
     @GET("posts")
     suspend fun getPosts(): List<PostApiModel>
 
+    @GET("posts/{id}")
+    suspend fun getPost(@Path("id") id: String): PostApiModel
+
     @GET("posts/{id}/comments")
     suspend fun getComments(@Path("id") postId: String): List<CommentApiModel>
 

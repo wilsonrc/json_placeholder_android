@@ -9,6 +9,8 @@ interface JPHDataSource {
     suspend fun getPost(id: String): Post?
     suspend fun savePosts(posts: List<Post>)
 
+    suspend fun savePost(post: Post)
+
     suspend fun deletePost(id: String)
 
     suspend fun updateFavoriteState(postId: String, favorite: Boolean)
@@ -23,7 +25,7 @@ interface JPHDataSource {
 
     suspend fun getUser(id: String): User
 
-    suspend fun getUsers(): Flow<List<User>>
+    suspend fun getUsers(): List<User>
 
     suspend fun saveUsers(users: List<User>)
     suspend fun saveUser(user: User)

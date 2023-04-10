@@ -13,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.jsonapp.R
 import com.example.jsonapp.databinding.HomeScreenBinding
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -63,7 +64,8 @@ class HomeScreenFragment : Fragment() {
                 postAdapter.submitList(uiState.posts)
             }
             is HomeUiState.Error -> {
-                // Show an error message or a retry button
+                // SHOW AN ERROR MESSAGE WITH snack BAR
+                Snackbar.make(binding.root, uiState.message, Snackbar.LENGTH_LONG).show()
             }
         }
     }

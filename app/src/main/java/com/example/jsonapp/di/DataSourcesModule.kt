@@ -1,5 +1,6 @@
 package com.example.jsonapp.di
 
+import com.example.jsonapp.common.INetworkConnectivityChecker
 import com.example.jsonapp.data.sources.IJPHRepository
 import com.example.jsonapp.data.sources.JPHRepository
 import com.example.jsonapp.data.sources.local.daos.CommentsDao
@@ -46,11 +47,13 @@ class DataSourcesModule {
     fun provideJPHRepository(
         remoteDataSource: JPHRemoteDataSource,
         localDataSource: JPHLocalDataSource,
+        networkConnectivityChecker: INetworkConnectivityChecker,
         @IODispatcher dispatcher: CoroutineDispatcher
     ): IJPHRepository {
         return JPHRepository(
             remoteDataSource = remoteDataSource,
             localDataSource = localDataSource,
+            networkConnectivityChecker = networkConnectivityChecker,
             dispatcher = dispatcher
         )
     }

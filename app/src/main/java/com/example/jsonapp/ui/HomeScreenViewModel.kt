@@ -4,12 +4,8 @@ import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.jsonapp.data.sources.IJPHRepository
-import com.example.jsonapp.data.sources.JPHRepository
-import com.example.jsonapp.data.sources.models.Comment
 import com.example.jsonapp.data.sources.models.Post
-import com.example.jsonapp.data.sources.models.User
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -34,24 +30,37 @@ class HomeScreenViewModel @Inject constructor(
     fun loadPosts() = viewModelScope.launch {
         jphRepository.fetchRemoteUsers()
         jphRepository.getPost().collect {
-            _homeScreenUiState.value = HomeUiState.Success(it)
+            if(it.isSuccess){
+                 it.getOrNull()?.let { i ->
+                    _homeScreenUiState.value = HomeUiState.Success(i)
+                 }
+            }else{
+                val errorMessage = it.exceptionOrNull()?.message ?: "Error loading posts"
+                _homeScreenUiState.value = HomeUiState.Error(errorMessage)
+            }
         }
     }
 
     fun loadCurrentPostDetail(postId: String) = viewModelScope.launch {
         if (currentPost == null) {
             val localPost = jphRepository.getPost(postId)
-            localPost?.let { post ->
-                currentPost = post
-                post.id.let {
-                    val users = jphRepository.getUser(it.toString())
-                    val comments = jphRepository.getComments(it.toString())
+            if(localPost.isFailure){
+                val errorMessage = localPost.exceptionOrNull()?.message ?: "Error loading post"
+                _postDetailsUiState.value = PostDetailsUiState.Error(errorMessage)
+                return@launch
+            }else{
+                localPost.getOrNull()?.let { post ->
+                    currentPost = post
+                    post.id.let {
+                        val users = jphRepository.getUser(it.toString())
+                        val comments = jphRepository.getComments(it.toString())
 
-                    _postDetailsUiState.value = PostDetailsUiState.Success(
-                        post = post,
-                        user = users,
-                        comments = comments
-                    )
+                        _postDetailsUiState.value = PostDetailsUiState.Success(
+                            post = post,
+                            user = users,
+                            comments = comments
+                        )
+                    }
                 }
             }
         } else {

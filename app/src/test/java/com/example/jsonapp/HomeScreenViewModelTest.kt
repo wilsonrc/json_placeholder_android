@@ -1,9 +1,7 @@
 package com.example.jsonapp
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.viewModelScope
 import com.example.jsonapp.data.sources.IJPHRepository
-import com.example.jsonapp.data.sources.JPHRepository
 import com.example.jsonapp.data.sources.models.Comment
 import com.example.jsonapp.data.sources.models.Post
 import com.example.jsonapp.data.sources.models.User
@@ -41,7 +39,6 @@ class HomeScreenViewModelTest {
     fun tearDown() {
         Dispatchers.resetMain()
     }
-
     @Test
     fun `test loadPosts`() = runTest(UnconfinedTestDispatcher()) {
         val posts = listOf(
@@ -50,7 +47,7 @@ class HomeScreenViewModelTest {
         )
 
         `when`(mockRepository.fetchRemoteUsers()).thenReturn(Unit)
-        `when`(mockRepository.getPost()).thenReturn(flowOf(posts))
+        `when`(mockRepository.getPost()).thenReturn(flowOf(Result.success(posts)))
 
         viewModel.loadPosts()
 
@@ -67,7 +64,7 @@ class HomeScreenViewModelTest {
             User(1, "User 1", "user1@example.com", "www.example.com", "1234567890", "1234567890")
         val comments = listOf(Comment(1, 1, "Comment 1", "comment1@example.com", "Comment body 1"))
 
-        `when`(mockRepository.getPost("1")).thenReturn(post)
+        `when`(mockRepository.getPost("1")).thenReturn(Result.success(post))
         `when`(mockRepository.getUser("1")).thenReturn(user)
         `when`(mockRepository.getComments("1")).thenReturn(comments)
 
