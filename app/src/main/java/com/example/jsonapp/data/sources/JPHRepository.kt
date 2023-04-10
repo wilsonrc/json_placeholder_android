@@ -50,6 +50,11 @@ class JPHRepository @Inject constructor(
         }
     }
 
+    override suspend fun getPost(id: String): Post? {
+        return withContext(dispatcher) {
+            localDataSource.getPost(id)
+        }
+    }
     override suspend fun getUser(id: String): User {
         return withContext(dispatcher) {
             localDataSource.getUser(id)

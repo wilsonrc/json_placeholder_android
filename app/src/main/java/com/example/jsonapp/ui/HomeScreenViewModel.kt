@@ -13,7 +13,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 
@@ -30,7 +29,7 @@ class HomeScreenViewModel @Inject constructor(
         MutableStateFlow<PostDetailsUiState>(PostDetailsUiState.Loading)
     val postDetailsUiState: StateFlow<PostDetailsUiState> = _postDetailsUiState
 
-    private var currentPost: Post? = null
+    var currentPost: Post? = null
 
     fun loadPosts() = viewModelScope.launch {
         jphRepository.fetchRemoteUsers()
@@ -39,17 +38,36 @@ class HomeScreenViewModel @Inject constructor(
         }
     }
 
-    fun loadPostDetail(post: Post) = viewModelScope.launch {
-        currentPost = post
-        post.id.let {
-            val users = jphRepository.getUser(it.toString())
-            val comments = jphRepository.getComments(it.toString())
-            _postDetailsUiState.value = PostDetailsUiState.Success(
-                post = post,
-                user = users,
-                comments = comments
-            )
+    fun loadCurrentPostDetail(postId: String) = viewModelScope.launch {
+        if (currentPost == null) {
+            val post = jphRepository.getPost(postId)
+            post?.let {
+                currentPost = post
+                post.id.let {
+                    val users = jphRepository.getUser(it.toString())
+                    val comments = jphRepository.getComments(it.toString())
+
+                    _postDetailsUiState.value = PostDetailsUiState.Success(
+                        post = post,
+                        user = users,
+                        comments = comments
+                    )
+                }
+            }
+        } else {
+            currentPost?.let { post ->
+                post.id.let {
+                    val users = jphRepository.getUser(it.toString())
+                    val comments = jphRepository.getComments(it.toString())
+                    _postDetailsUiState.value = PostDetailsUiState.Success(
+                        post = post,
+                        user = users,
+                        comments = comments
+                    )
+                }
+            }
         }
+
     }
 
 

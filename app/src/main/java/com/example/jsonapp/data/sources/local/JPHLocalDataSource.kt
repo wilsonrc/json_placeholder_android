@@ -25,6 +25,18 @@ class JPHLocalDataSource(
         }
     }
 
+    override suspend fun getPost(id: String): Post? {
+        return postsDao.getPost(id)?.let { post ->
+            Post(
+                userId = post.userId,
+                id = post.postId,
+                title = post.title,
+                body = post.body,
+                isFavorite = post.isFavorite
+            )
+        }
+    }
+
     override suspend fun savePosts(posts: List<Post>) {
         postsDao.savePosts(posts.map { post ->
             PostDbModel(

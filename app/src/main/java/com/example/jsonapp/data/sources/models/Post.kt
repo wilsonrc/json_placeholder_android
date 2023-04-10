@@ -6,4 +6,4 @@ data class Post(
     val title: String,
     val body: String,
     val isFavorite : Boolean
-) : java.io.Serializable
+)

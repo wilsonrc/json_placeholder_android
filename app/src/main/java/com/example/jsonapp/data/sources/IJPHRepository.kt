@@ -7,6 +7,8 @@ import kotlinx.coroutines.flow.Flow
 
 interface IJPHRepository {
     suspend fun getPost(): Flow<List<Post>>
+
+    suspend fun getPost(id: String): Post?
     suspend fun getUser(id: String): User
     suspend fun getComments(postId: String): List<Comment>
     suspend fun updateFavoriteState(postId: String, isFavorite: Boolean)

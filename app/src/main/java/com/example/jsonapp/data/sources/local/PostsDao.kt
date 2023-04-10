@@ -12,6 +12,9 @@ interface PostsDao {
     @Query("SELECT * FROM posts ORDER BY isFavorite DESC")
     fun getPosts(): Flow<List<PostDbModel>>
 
+    @Query("SELECT * FROM posts WHERE id = :id")
+    fun getPost(id: String): PostDbModel?
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun savePosts(posts: List<PostDbModel>)
 

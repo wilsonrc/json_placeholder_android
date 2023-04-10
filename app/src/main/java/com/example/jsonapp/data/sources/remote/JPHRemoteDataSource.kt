@@ -27,6 +27,10 @@ class JPHRemoteDataSource @Inject constructor(
         emit(result)
     }
 
+    override suspend fun getPost(id: String): Post? {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun savePosts(posts: List<Post>) {
         TODO("Not yet implemented")
     }

@@ -5,12 +5,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.jsonapp.data.sources.models.Post
 import com.example.jsonapp.databinding.PostDetailBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -20,7 +19,7 @@ class PostDetailsFragment : Fragment() {
 
     private var _binding: PostDetailBinding? = null
     private val binding get() = _binding!!
-    private lateinit var homeScreenViewModel: HomeScreenViewModel
+    private val homeScreenViewModel: HomeScreenViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,15 +32,14 @@ class PostDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val post: Post = arguments?.getSerializable("post") as Post
-        homeScreenViewModel = ViewModelProvider(requireActivity())[HomeScreenViewModel::class.java]
-        homeScreenViewModel.loadPostDetail(post)
+        val postId : String? = arguments?.getString("postId")
+
+
+        postId?.let{
+            homeScreenViewModel.loadCurrentPostDetail(postId)
+        }
 
         observePostDetailsUiState()
-
-        // Update your views with post details
-
-
     }
 
     private fun observePostDetailsUiState() {

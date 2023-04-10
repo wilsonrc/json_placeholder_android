@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.Flow
 interface JPHDataSource {
     suspend fun getPosts(): Flow<List<Post>>
 
+    suspend fun getPost(id: String): Post?
     suspend fun savePosts(posts: List<Post>)
 
     suspend fun deletePost(id: String)
