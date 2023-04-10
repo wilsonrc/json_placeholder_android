@@ -20,7 +20,7 @@ class PostDetailsFragment : Fragment() {
     private var _binding: PostDetailBinding? = null
     private val binding get() = _binding!!
     private val homeScreenViewModel: HomeScreenViewModel by activityViewModels()
-
+    private lateinit var commentsAdapter: CommentsAdapter
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -32,42 +32,45 @@ class PostDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val postId : String? = arguments?.getString("postId")
+        val postId: String? = arguments?.getString("postId")
 
+        commentsAdapter = CommentsAdapter()
+        binding.rvComments.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvComments.adapter = commentsAdapter
 
-        postId?.let{
+        postId?.let {
             homeScreenViewModel.loadCurrentPostDetail(postId)
         }
 
         observePostDetailsUiState()
     }
-
     private fun observePostDetailsUiState() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 homeScreenViewModel.postDetailsUiState.collect { uiState ->
-                    when (uiState) {
-                        is PostDetailsUiState.Loading -> {
-
-                        }
-                        is PostDetailsUiState.Success -> {
-                            binding.tvPostTitle.text =  uiState.post.title
-                            binding.tvPostBody.text =  uiState.post.body
-
-                            binding.tvUserName.text = uiState.user.name
-                            binding.tvUserEmail.text = uiState.user.email
-                            binding.tvUserWebsite.text = uiState.user.website
-
-                            val commentsAdapter = CommentsAdapter(uiState.comments)
-                            binding.rvComments.layoutManager =
-                                LinearLayoutManager(requireContext())
-                            binding.rvComments.adapter = commentsAdapter
-                        }
-                        is PostDetailsUiState.Error -> {
-
-                        }
-                    }
+                    handlePostDetailsUiState(uiState)
                 }
+            }
+        }
+    }
+
+    private fun handlePostDetailsUiState(uiState: PostDetailsUiState) {
+        when (uiState) {
+            is PostDetailsUiState.Loading -> {
+
+            }
+            is PostDetailsUiState.Success -> {
+                binding.tvPostTitle.text = uiState.post.title
+                binding.tvPostBody.text = uiState.post.body
+
+                binding.tvUserName.text = uiState.user.name
+                binding.tvUserEmail.text = uiState.user.email
+                binding.tvUserWebsite.text = uiState.user.website
+
+                commentsAdapter.submitList(uiState.comments)
+            }
+            is PostDetailsUiState.Error -> {
+
             }
         }
     }

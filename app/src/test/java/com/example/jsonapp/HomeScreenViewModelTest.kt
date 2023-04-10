@@ -30,7 +30,6 @@ class HomeScreenViewModelTest {
     private val testDispatcher = UnconfinedTestDispatcher()
     private lateinit var mockRepository: IJPHRepository
     private lateinit var viewModel: HomeScreenViewModel
-
     @Before
     fun setup() {
         Dispatchers.setMain(testDispatcher)
@@ -68,6 +67,7 @@ class HomeScreenViewModelTest {
             User(1, "User 1", "user1@example.com", "www.example.com", "1234567890", "1234567890")
         val comments = listOf(Comment(1, 1, "Comment 1", "comment1@example.com", "Comment body 1"))
 
+        `when`(mockRepository.getPost("1")).thenReturn(post)
         `when`(mockRepository.getUser("1")).thenReturn(user)
         `when`(mockRepository.getComments("1")).thenReturn(comments)
 

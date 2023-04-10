@@ -34,7 +34,7 @@ class HomeScreenFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         homeScreenViewModel.loadPosts()
-        postAdapter = PostAdapter(emptyList()) {}
+        postAdapter = PostAdapter { handlePostClick(it) }
 
         with(binding) {
             postsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -60,8 +60,7 @@ class HomeScreenFragment : Fragment() {
                 // Show a loading indicator if needed
             }
             is HomeUiState.Success -> {
-                postAdapter = PostAdapter(uiState.posts) { handlePostClick(it) }
-                binding.postsRecyclerView.adapter = postAdapter
+                postAdapter.submitList(uiState.posts)
             }
             is HomeUiState.Error -> {
                 // Show an error message or a retry button

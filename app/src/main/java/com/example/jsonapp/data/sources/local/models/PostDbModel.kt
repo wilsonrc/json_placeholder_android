@@ -1,4 +1,4 @@
-package com.example.jsonapp.data.sources.local
+package com.example.jsonapp.data.sources.local.models
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

@@ -1,9 +1,9 @@
 package com.example.jsonapp.di
 
-import com.example.jsonapp.data.sources.local.CommentsDao
+import com.example.jsonapp.data.sources.local.daos.CommentsDao
 import com.example.jsonapp.data.sources.local.JPHDatabase
-import com.example.jsonapp.data.sources.local.PostsDao
-import com.example.jsonapp.data.sources.local.UsersDao
+import com.example.jsonapp.data.sources.local.daos.PostsDao
+import com.example.jsonapp.data.sources.local.daos.UsersDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

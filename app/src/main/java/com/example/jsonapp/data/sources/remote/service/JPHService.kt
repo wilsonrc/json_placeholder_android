@@ -1,5 +1,8 @@
-package com.example.jsonapp.data.sources.remote
+package com.example.jsonapp.data.sources.remote.service
 
+import com.example.jsonapp.data.sources.remote.models.CommentApiModel
+import com.example.jsonapp.data.sources.remote.models.PostApiModel
+import com.example.jsonapp.data.sources.remote.models.UserApiModel
 import retrofit2.http.GET
 import retrofit2.http.Path
 

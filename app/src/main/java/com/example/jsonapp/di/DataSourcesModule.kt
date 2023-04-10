@@ -2,19 +2,18 @@ package com.example.jsonapp.di
 
 import com.example.jsonapp.data.sources.IJPHRepository
 import com.example.jsonapp.data.sources.JPHRepository
-import com.example.jsonapp.data.sources.local.CommentsDao
+import com.example.jsonapp.data.sources.local.daos.CommentsDao
 import com.example.jsonapp.data.sources.local.JPHLocalDataSource
-import com.example.jsonapp.data.sources.local.PostsDao
-import com.example.jsonapp.data.sources.local.UsersDao
+import com.example.jsonapp.data.sources.local.daos.PostsDao
+import com.example.jsonapp.data.sources.local.daos.UsersDao
 import com.example.jsonapp.data.sources.remote.JPHRemoteDataSource
-import com.example.jsonapp.data.sources.remote.JPHService
+import com.example.jsonapp.data.sources.remote.service.JPHService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 
 @Module
 @InstallIn(ViewModelComponent::class)

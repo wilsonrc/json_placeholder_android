@@ -2,12 +2,13 @@ package com.example.jsonapp.ui
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.jsonapp.data.sources.models.Comment
 import com.example.jsonapp.databinding.ItemCommentBinding
 
-class CommentsAdapter(private val comments: List<Comment>) :
-    RecyclerView.Adapter<CommentsAdapter.ViewHolder>() {
+class CommentsAdapter : ListAdapter<Comment, CommentsAdapter.ViewHolder>(CommentDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemCommentBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -15,10 +16,8 @@ class CommentsAdapter(private val comments: List<Comment>) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(comments[position])
+        holder.bind(getItem(position))
     }
-
-    override fun getItemCount(): Int = comments.size
 
     inner class ViewHolder(private val binding: ItemCommentBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(comment: Comment) {
@@ -28,5 +27,15 @@ class CommentsAdapter(private val comments: List<Comment>) :
                 commentBodyTextView.text = comment.body
             }
         }
+    }
+}
+
+class CommentDiffCallback : DiffUtil.ItemCallback<Comment>() {
+    override fun areItemsTheSame(oldItem: Comment, newItem: Comment): Boolean {
+        return oldItem.id == newItem.id
+    }
+
+    override fun areContentsTheSame(oldItem: Comment, newItem: Comment): Boolean {
+        return oldItem == newItem
     }
 }

@@ -2,6 +2,12 @@ package com.example.jsonapp.data.sources.local
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import com.example.jsonapp.data.sources.local.daos.CommentsDao
+import com.example.jsonapp.data.sources.local.daos.PostsDao
+import com.example.jsonapp.data.sources.local.daos.UsersDao
+import com.example.jsonapp.data.sources.local.models.CommentDbModel
+import com.example.jsonapp.data.sources.local.models.PostDbModel
+import com.example.jsonapp.data.sources.local.models.UserDbModel
 
 @Database(
     entities = [

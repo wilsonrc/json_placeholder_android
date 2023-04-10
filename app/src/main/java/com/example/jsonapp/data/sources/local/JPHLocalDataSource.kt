@@ -1,6 +1,12 @@
 package com.example.jsonapp.data.sources.local
 
 import com.example.jsonapp.data.sources.JPHDataSource
+import com.example.jsonapp.data.sources.local.daos.CommentsDao
+import com.example.jsonapp.data.sources.local.daos.PostsDao
+import com.example.jsonapp.data.sources.local.daos.UsersDao
+import com.example.jsonapp.data.sources.local.models.CommentDbModel
+import com.example.jsonapp.data.sources.local.models.PostDbModel
+import com.example.jsonapp.data.sources.local.models.UserDbModel
 import com.example.jsonapp.data.sources.models.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map

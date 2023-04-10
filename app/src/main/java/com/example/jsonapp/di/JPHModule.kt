@@ -1,6 +1,6 @@
 package com.example.jsonapp.di
 
-import com.example.jsonapp.data.sources.remote.JPHService
+import com.example.jsonapp.data.sources.remote.service.JPHService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

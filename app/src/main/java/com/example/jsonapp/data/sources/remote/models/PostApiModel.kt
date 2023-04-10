@@ -1,4 +1,4 @@
-package com.example.jsonapp.data.sources.remote
+package com.example.jsonapp.data.sources.remote.models
 
 data class PostApiModel(
     val userId: Int,

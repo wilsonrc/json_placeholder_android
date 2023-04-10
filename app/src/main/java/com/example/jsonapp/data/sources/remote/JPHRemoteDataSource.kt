@@ -4,6 +4,7 @@ import com.example.jsonapp.data.sources.JPHDataSource
 import com.example.jsonapp.data.sources.models.Comment
 import com.example.jsonapp.data.sources.models.Post
 import com.example.jsonapp.data.sources.models.User
+import com.example.jsonapp.data.sources.remote.service.JPHService
 import dagger.hilt.android.scopes.ActivityScoped
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
