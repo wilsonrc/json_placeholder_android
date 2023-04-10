@@ -47,10 +47,10 @@ class PostDetailsFragment : Fragment() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 homeScreenViewModel.postDetailsUiState.collect { uiState ->
                     when (uiState) {
-                        is HomeScreenViewModel.PostDetailsUiState.Loading -> {
+                        is PostDetailsUiState.Loading -> {
 
                         }
-                        is HomeScreenViewModel.PostDetailsUiState.Success -> {
+                        is PostDetailsUiState.Success -> {
                             binding.tvPostTitle.text =  uiState.post.title
                             binding.tvPostBody.text =  uiState.post.body
 
@@ -63,7 +63,7 @@ class PostDetailsFragment : Fragment() {
                                 LinearLayoutManager(requireContext())
                             binding.rvComments.adapter = commentsAdapter
                         }
-                        is HomeScreenViewModel.PostDetailsUiState.Error -> {
+                        is PostDetailsUiState.Error -> {
 
                         }
                     }
