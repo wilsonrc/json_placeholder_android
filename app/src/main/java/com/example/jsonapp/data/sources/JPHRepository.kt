@@ -7,8 +7,9 @@ import com.example.jsonapp.data.sources.models.User
 import com.example.jsonapp.data.sources.remote.JPHRemoteDataSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.transform
+import javax.inject.Inject
 
-class JPHRepository  (
+class JPHRepository @Inject constructor(
     private val localDataSource: JPHLocalDataSource,
     private val remoteDataSource: JPHRemoteDataSource
 ) {

@@ -4,10 +4,15 @@ import com.example.jsonapp.data.sources.JPHDataSource
 import com.example.jsonapp.data.sources.models.Comment
 import com.example.jsonapp.data.sources.models.Post
 import com.example.jsonapp.data.sources.models.User
+import dagger.hilt.android.scopes.ActivityScoped
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import javax.inject.Inject
 
-class JPHRemoteDataSource(private val jphService: JPHService) : JPHDataSource {
+@ActivityScoped
+class JPHRemoteDataSource @Inject constructor(
+    val jphService: JPHService
+) : JPHDataSource {
     override suspend fun getPosts() = flow {
         val posts = jphService.getPosts()
         val result = posts.map { post ->
@@ -42,7 +47,7 @@ class JPHRemoteDataSource(private val jphService: JPHService) : JPHDataSource {
     }
 
     override suspend fun getComments(postId: String): List<Comment> {
-         return jphService.getComments(postId).map {
+        return jphService.getComments(postId).map {
             Comment(
                 postId = it.postId,
                 id = it.id,

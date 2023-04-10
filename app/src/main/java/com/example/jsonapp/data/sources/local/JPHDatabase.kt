@@ -12,13 +12,11 @@ import androidx.room.RoomDatabase
     version = 1,
     exportSchema = false
 )
-abstract class PostsDatabase : RoomDatabase(){
-
+abstract class JPHDatabase : RoomDatabase(){
     abstract fun postsDao(): PostsDao
     abstract fun commentsDao(): CommentsDao
     abstract fun usersDao(): UsersDao
-
     companion object {
-        const val DATABASE_NAME = "posts.db"
+        const val DATABASE_NAME = "JPHDatabase.db"
     }
 }

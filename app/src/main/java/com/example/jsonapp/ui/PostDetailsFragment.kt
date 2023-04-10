@@ -10,19 +10,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.room.Room
-import com.example.jsonapp.data.sources.local.PostsDatabase
-import com.example.jsonapp.data.sources.models.Comment
 import com.example.jsonapp.data.sources.models.Post
-import com.example.jsonapp.data.sources.models.User
-import com.example.jsonapp.data.sources.remote.JPHService
 import com.example.jsonapp.databinding.PostDetailBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
-/**
- * A simple [Fragment] subclass as the second destination in the navigation.
- */
+@AndroidEntryPoint
 class PostDetailsFragment : Fragment() {
 
     private var _binding: PostDetailBinding? = null
@@ -42,13 +35,6 @@ class PostDetailsFragment : Fragment() {
 
         val post: Post = arguments?.getSerializable("post") as Post
         homeScreenViewModel = ViewModelProvider(requireActivity())[HomeScreenViewModel::class.java]
-        val apiService = JPHService.create()
-
-        val database = Room.databaseBuilder(
-            activity?.applicationContext!!,
-            PostsDatabase::class.java,
-            PostsDatabase.DATABASE_NAME
-        ).build()
         homeScreenViewModel.loadPostDetail(post)
 
         observePostDetailsUiState()

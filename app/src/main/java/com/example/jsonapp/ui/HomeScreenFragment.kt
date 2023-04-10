@@ -11,18 +11,12 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.room.Room
 import com.example.jsonapp.R
-import com.example.jsonapp.data.sources.local.PostsDatabase
-import com.example.jsonapp.data.sources.remote.JPHService
 import com.example.jsonapp.databinding.HomeScreenBinding
 import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.internal.Contexts
 import kotlinx.coroutines.launch
 
-/**
- * A simple [Fragment] subclass as the default destination in the navigation.
- */
+@AndroidEntryPoint
 class HomeScreenFragment : Fragment() {
 
     private var _binding: HomeScreenBinding? = null
@@ -44,15 +38,6 @@ class HomeScreenFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         homeScreenViewModel = ViewModelProvider(requireActivity())[HomeScreenViewModel::class.java]
-        val apiService = JPHService.create()
-
-        val database = Room.databaseBuilder(
-            activity?.applicationContext!!,
-            PostsDatabase::class.java,
-            PostsDatabase.DATABASE_NAME
-        ).build()
-        homeScreenViewModel.setupViewModel(database, apiService)
-
         postAdapter = PostAdapter(emptyList()) {}
 
         binding.postsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
