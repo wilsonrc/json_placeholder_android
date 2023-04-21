@@ -1,6 +1,5 @@
 package com.example.jsonapp
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.example.jsonapp.data.sources.IJPHRepository
 import com.example.jsonapp.data.sources.models.Comment
 import com.example.jsonapp.data.sources.models.Post
@@ -15,15 +14,12 @@ import kotlinx.coroutines.test.*
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mockito
 import org.mockito.Mockito.`when`
 
 @ExperimentalCoroutinesApi
 class HomeScreenViewModelTest {
-    @get:Rule
-    var instantTaskExecutorRule = InstantTaskExecutorRule()
 
     private val testDispatcher = UnconfinedTestDispatcher()
     private lateinit var mockRepository: IJPHRepository
@@ -40,7 +36,7 @@ class HomeScreenViewModelTest {
         Dispatchers.resetMain()
     }
     @Test
-    fun `test loadPosts`() = runTest(UnconfinedTestDispatcher()) {
+    fun `test loadPosts`() = runTest {
         val posts = listOf(
             Post(1, 1, "Title 1", "Body 1", false),
             Post(1, 2, "Title 2", "Body 2", true)
@@ -58,7 +54,7 @@ class HomeScreenViewModelTest {
     }
 
     @Test
-    fun `test loadPostDetail`() = runTest(UnconfinedTestDispatcher()) {
+    fun `test loadPostDetail`() = runTest {
         val post = Post(1, 1, "Title 1", "Body 1", false)
         val user =
             User(1, "User 1", "user1@example.com", "www.example.com", "1234567890", "1234567890")
