@@ -1,5 +1,5 @@
  # JSONPlaceholder Android APP
-This application shows the post data and their details from [JSONPlaceholder](https://jsonplaceholder.typicode.com) using MAD
+This application shows the post data and their details from [JSONPlaceholder](https://jsonplaceholder.typicode.com) using MAD (Modern Android Development) skills.
 ### Table of Contents
  - Introduction
  - Architecture
